@@ -6,7 +6,12 @@ The very tutorial for starters learning MongoDB
 ## Contents
 - [MongoDB installation]()
 - [MongoDB and NoSql]()
+- [MongoDB services]()
 - [Basic MongoDB syntax]()
+  - [Access databases' meta data]()
+  - [Database level]()
+  - [Collection level]()
+  - [Documents level]()
 
 ---
 
@@ -73,7 +78,7 @@ MongoDB is a source-available cross-platform document-oriented database program.
 
 |Aspects|Sql|NoSql|
 |---|---|---|
-|Data formats|Relational tables with primary keys|Documents, collections and JSON-like objects|
+|Data formats|Relational tables with primary keys|Collections and JSON-like documents|
 |Difficulty to scale |Hard to scale|Easy to scale|
 |Scaling pattern| Scale vertically| Scale horizontally|
 |Other characteristics| Data consistensy| Same|
@@ -91,6 +96,113 @@ MongoDB is a source-available cross-platform document-oriented database program.
 
 ---
 
+## MongoDB services
+
+### Start and Stop Mongo service
+
+Start MongoDB service
+
+```shell
+sudo service mongod start
+```
+
+Stop MongoDB service
+
+```shell
+sudo service mongod stop
+```
+
+### Access MongoDB shell
+
+```shell
+mongosh
+```
+
+---
+
 ## Basic MongoDB syntax
 
+### Access databases' meta data
 
+These are each database' special collection. To access, we can:
+
+```shell
+dbname.system.*
+```
+
+Options:
+
+|Namespaces| Descriptions|
+|---|---|
+|dbname.system.namespaces	|List all namespaces|
+|dbname.system.indexes	|list all indexes|
+|dbname.system.profile	|List database's profile info|
+|dbname.system.users	|List all users who can access the database|
+|dbname.local.sources	|List slaves' info|
+
+### Database level
+
+#### Show all dbs:
+
+```shell
+show dbs
+```
+
+#### Create/Switch to a specific database:
+
+```shell
+use _DB_NAME_
+```
+
+**Notes**: 
+- The defaulf entry db is ``test``.
+- MongoDB will automatically create a db if the ``use``-ed one does not exist.
+
+#### Show current database info
+
+Show current database name:
+
+```shell
+db
+```
+
+#### Delete current database
+
+```shell
+db.dropDatabase()
+```
+
+### Collection level
+
+#### Create collection
+
+Create a collection:
+
+```shell
+db.createCollection(name, options)
+```
+
+[Options](https://www.mongodb.com/docs/manual/reference/method/db.createCollection/)
+
+Or we can directly access a collection without creating it ahead(Assume the we choose the collection name ``users``):
+
+```shell
+db.users.insertOne({name: "Sean"})
+```
+
+Again, MongoDB will automatically create the collection if it does not exist.
+
+#### Show collections
+
+```shell
+show collections
+## or: show tables
+```
+
+#### Delete collections
+
+```shell
+db.<collection_name>.drop()
+```
+
+### Documents level
