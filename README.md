@@ -1,4 +1,4 @@
-# MongoDB - Study Notes
+# [<img src="https://upload.wikimedia.org/wikipedia/commons/9/93/MongoDB_Logo.svg" width = 35%>](https://www.mongodb.com/docs/)
 The very tutorial for starters learning MongoDB
 - Author: Sean
 - Date created: Feb 14<sup>th</sup>, 2023
@@ -11,7 +11,7 @@ The very tutorial for starters learning MongoDB
   - [Access databases' meta data]()
   - [Database level]()
   - [Collection level]()
-  - [Documents level]()
+- [Documents CRUD]()
 
 ---
 
@@ -122,7 +122,7 @@ mongosh
 
 ## Basic MongoDB syntax
 
-### Access databases' meta data
+- ### Access databases' meta data
 
 These are each database' special collection. To access, we can:
 
@@ -140,7 +140,7 @@ Options:
 |dbname.system.users	|List all users who can access the database|
 |dbname.local.sources	|List slaves' info|
 
-### Database level
+- ### Database level
 
 #### Show all dbs:
 
@@ -172,7 +172,7 @@ db
 db.dropDatabase()
 ```
 
-### Collection level
+- ### Collection level
 
 #### Create collection
 
@@ -205,4 +205,101 @@ show collections
 db.<collection_name>.drop()
 ```
 
-### Documents level
+---
+
+## Documents CRUD
+
+- ### Documents creation
+
+Insert one:
+
+```shell
+db.collection.insertOne({key: value})
+```
+
+Insert multiple documents:
+
+```shell
+db.collection.insertMany(
+   [ <document 1> , <document 2>, ... ],
+   {
+      writeConcern: <document>,
+      ordered: <boolean>
+   }
+)
+```
+[Optional parameters](https://www.mongodb.com/docs/manual/reference/method/db.collection.insertMany/)
+
+**Notes**: In MongoDB, each document stored in a collection requires a unique ``_id`` field that acts as a primary key. If an inserted document omits the ``_id`` field, the MongoDB driver automatically generates an ObjectId for the ``_id`` field.
+
+- ### Documents query
+
+#### Select All Documents in a Collection
+
+```shell
+db.collection.find({})
+```
+
+#### Specify Equality Condition
+
+To specify equality conditions, use ``<field>:<value>`` expressions:
+```shell
+db.collection.find( { <field1>: <value1>, ... } )
+```
+
+Example:
+
+```shell
+db.collection.find{ name: "Sean", age: 24 }
+```
+
+To only get part of the fields, we use the second parameter in ``find()`` method:
+
+```shell
+db.collection.find( { <field1>: <value1>, ... }, { <field1>: boolean, <field2>: boolean,... } )
+```
+
+For each field, the boolean indicates if we want this field to be selected.
+- If we want this field, we set it to be ``1``
+- If we don't want, we set it to be ``0``
+- If we don't specify, the field is not selected by default
+- ``_id`` is always selected by default unless we specify it to be ``0``
+
+#### Specify Conditions Using Query Operators
+
+Query Operators should be JSON-format:
+
+```shell
+{ <Query_operator1>: value,  <Query_operator2>: value, ...} 
+```
+
+And we can use Query Operators as values to the keys:
+
+```shell
+db.collection.find( { age: { $lt: 30} } )
+```
+
+Complete query conditions [here](https://www.mongodb.com/docs/manual/reference/operator/query/)
+
+#### SELECT ``AND`` operator
+
+```shell
+db.collection.find( { key1: value1, key2: value2, ...} )
+```
+
+#### SELECT ``OR`` operator
+
+```shell
+db.collection.find( { $or: [{key1: value1}, {key2: value2}, ...] )
+```
+
+---
+
+[Back To top]()
+
+
+
+
+
+
+
