@@ -295,7 +295,7 @@ db.collection.find( { $or: [{key1: value1}, {key2: value2}, ...] )
 
 ---
 
-[Back To top]()
+[Back To top](https://github.com/SeanXiaoby/mongodb-notes/blob/main/README.md#)
 
 
 
